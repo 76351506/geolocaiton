@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>地址定位 - geolocation</title>
+  </head>
+  <body>
+    <script>
+      window.geoLocation = (() => {
+        class Location {
+          constructor() {
+            this.geolocation = null;
+            this.init();
+          }
+          init() {
+            if (navigator.geolocation) {
+              this.geolocation = window.navigator.geolocation;
+              this.getCurrentLocation();
+            }
+          }
+          handlerSuccess(position) {
+            console.log(position.coords.latitude, position.coords.longitude);
+          }
+          handlerFaild({ code }) {
+            let msg = "";
+            switch (code) {
+              case 1:
+                msg = "用户拒绝了位置服务";
+                alert(msg);
+                break;
+
+              case 2:
+                msg = "获取不到位置信息";
+                alert(msg);
+                break;
+
+              case 3:
+                msg = "获取信息超时";
+                alert(msg);
+                break;
+            }
+            return new Error(msg);
+          }
+          getCurrentLocation() {
+            this.geolocation.getCurrentPosition(
+              this.handlerSuccess,
+              this.handlerSuccess
+            );
+          }
+        }
+        return new Location();
+      })();
+      console.log(geoLocation);
+    </script>
+  </body>
+</html>
